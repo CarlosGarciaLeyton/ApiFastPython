@@ -3,7 +3,11 @@ from typing import List
 from uuid import uuid4
 from model import Role, User
 
-app = FastAPI()
+app = FastAPI(
+    title='Apis sistema de x',
+    description ="Api que retorna todos los usuarios",
+    version ='0.0.1'
+)
 db: List[User]= [
     User(
         id = uuid4(),
@@ -29,9 +33,12 @@ db: List[User]= [
 
 ]
 
-@app.get("/api/v1/users")
+@app.get("/api/v1/users", tags=['inicio'])
+
 async def get_users():
     return db
+
+
 
 
 
