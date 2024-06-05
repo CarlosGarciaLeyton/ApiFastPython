@@ -19,8 +19,8 @@ db: List[User]= [
      User(
         id = uuid4(),
         first_name="josefa",
-        last_name ="andrea",
-        email="jjjj@jjj.cl",
+        last_name ="andreag",
+        email="jjjj@jjj.com",
         
     ),
      User(
@@ -33,7 +33,7 @@ db: List[User]= [
 
 ]
 
-@app.get("/api/v1/users", tags=['inicio'])
+@app.get("/api/v1/user", tags=['inicio'])
 
 async def get_users():
     return db
