@@ -1,51 +1,30 @@
-from fastapi import FastAPI, Form
-from typing import List
-from uuid import uuid4
-from model import Role, User
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse, JSONResponse  # Update this line
+from fastapi.middleware.cors import CORSMiddleware
+from app.v1.router.user_router import user_router
 
 app = FastAPI(
-    title='Apis sistema de x',
-    description ="Api que retorna todos los usuarios",
-    version ='0.0.1'
+    title='Tutorial API',
+    description='Api paso a paso',
+    version='0.0.1'
 )
-db: List[User]= [
-    User(
-        id = uuid4(),
-        first_name="jose",
-        last_name ="pedro",
-        email="jjjj@jj.cl",
-       
-    ),
-     User(
-        id = uuid4(),
-        first_name="josefa",
-        last_name ="andreag",
-        email="jjjj@jjj.com",
-        
-    ),
-     User(
-        id = uuid4(),
-        first_name="antonio",
-        last_name ="antonio",
-        email="jjjj@jjj.cl",
-       
-    ),
-
+origins = [
+    "http://localhost",
 ]
-
-@app.get("/api/v1/user", tags=['inicio'])
-
-async def get_users():
-    return db
-
-
-
-
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.include_router(user_router)
 
 
+#API EJEMPLO
 
-
-
+'''@app.get('/', tags=['inicio'])
+def read_root():
+    return HTMLResponse ('<h2> Hola </h2>')'''
 
 

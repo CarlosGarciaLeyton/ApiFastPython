@@ -1,37 +1,38 @@
+from fastapi import FastAPI
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import status
 from fastapi import Body
+from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.v1.schema import user_schema
 from app.v1.service import user_service
+from app.v1.service import auth_service
+from app.v1.schema.token_schema import Token
 
 from app.v1.utils.db import get_db
+
 #RUTEO DE URL CON PREFIJO
-router = APIRouter(
-    prefix="/api/v1",
-    tags=["USER"]
+user_router = APIRouter(
+
+
 )
 
-
-@router.post(
+@user_router.post(
     "/user/",
-    status_code=status.HTTP_200_OK,
-    response_model=user_schema.User,
-    dependencies=[Depends(get_db)],
-    summary="Nuevo usuario Creado"
+   tags=["users"],
+   summary="Nuevo usuario Creado"
 )
 def create_user(user: user_schema.UserRegister = Body(...)):
-    """
-    ## Create USER
-
-    ### Args
-    La web recibe parametros, que son devueltos en objeto Usuario
-    - email: un email valido
-    - username: un unico username
-    - password: una password fuerte
-
-    ### Returns
-    - user: info del usuario
-    """
     return user_service.create_user(user)
+
+
+@user_router.post(
+    "/login",
+    tags=["login"],
+    response_model=Token
+)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    access_token = auth_service.generate_token(form_data.username, form_data.password)
+    return Token(access_token=access_token, token_type="bearer")
