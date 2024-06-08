@@ -14,18 +14,26 @@ from app.v1.schema.token_schema import Token
 from app.v1.utils.db import get_db
 
 #RUTEO DE URL CON PREFIJO
-user_router = APIRouter(
-   prefix='/api/v1',
+admin_router = APIRouter(
+      prefix='/api/v1', 
 
 )
 
-@user_router.post(
-    "/user",
-   tags=["users"],
-   summary="Nuevo usuario Creado"
+
+@admin_router.post(
+    "/admin",
+   tags=["admin"],
+   summary="Nuevo admin creado"
 )
 def create_user(user: user_schema.UserRegister = Body(...)):
     return user_service.create_user(user)
 
+@admin_router.get(
+    "/product",
+   tags=["product"],
+   summary="obtener productos"
+)
+def create_user(user: user_schema.UserRegister = Body(...)):
+    return user_service.create_user(user)
 
 
